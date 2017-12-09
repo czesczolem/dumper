@@ -1,7 +1,5 @@
 from flask import Flask, render_template
 from flask import request, jsonify
-import sys, os
-from threading import Timer
 
 app = Flask(__name__)
 tcp_dump = False

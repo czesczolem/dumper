@@ -1,5 +1,3 @@
-import sys
-import os
 import subprocess
 import requests
 import json
@@ -14,9 +12,6 @@ if __name__ == '__main__':
 			tcp_flag = json_data["tcp_flag"]
 			print "Connected with server"
 			print "tcp_flag: ", tcp_flag
-
-			#TODO:
-			#subprocess
 
 			if tcp_flag == True:
 				filename = "test.txt"
