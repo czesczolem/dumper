@@ -5,10 +5,6 @@ from threading import Timer
 
 app = Flask(__name__)
 
-@app.route("/test", methods=['GET'])
-def test_connection():
-    return "Connection successful!"
-
 @app.route("/redirect", methods=['GET'])
 def redirect():
     with open('test', 'w') as f:
@@ -16,10 +12,8 @@ def redirect():
     return render_template('redirect.html')
 
 @app.route("/dumping", methods=['GET'])
-def ():
-
-    return render_template('redirect.html')
-
+def dumping_data():
+    return render_template('dumping.html')
 
 @app.route('/')
 def index():
