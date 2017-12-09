@@ -10,7 +10,9 @@ if __name__ == '__main__':
 	tcp_flag = json_data["tcp_flag"]
 	print tcp_flag
 
-	#TODO: subprocess
+	#TODO:
+	#subprocess
+	#bash script
 
 	if tcp_flag == True:
 		command = "echo test > test.txt"

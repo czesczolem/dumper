@@ -27,6 +27,7 @@ def dumping_data():
 def tcp_flag():
     if request.method == "GET":
         return jsonify({"tcp_flag": tcp_dump})
+    # after add subprocess
     # elif request.method == "POST":
     #     tcp_dump
 
