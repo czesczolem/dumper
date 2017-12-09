@@ -25,11 +25,12 @@ def dumping_data():
 
 @app.route('/tcp_flag', methods=['GET', 'POST'])
 def tcp_flag():
+    global tcp_dump
     if request.method == "GET":
         return jsonify({"tcp_flag": tcp_dump})
-    # after add subprocess
-    # elif request.method == "POST":
-    #     tcp_dump
+    elif request.method == "POST":
+        tcp_dump = False
+        return jsonify({"tcp_flag": tcp_dump})
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5050, debug=True)
