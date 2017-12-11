@@ -4,17 +4,6 @@ from flask import request, jsonify
 app = Flask(__name__)
 tcp_dump = False
 
-                #Main part
-
-# @app.route("/redirect", methods=['GET'])
-# def redirect_delay():
-#     global tcp_dump
-#     if tcp_dump:
-#         return "tcp dump in use, please try again in few minutes"
-#     else:
-#         tcp_dump = True
-#         return render_template('redirect.html')
-
 @app.route('/tcp_flag', methods=['GET', 'POST'])
 def tcp_flag():
     global tcp_dump
@@ -24,7 +13,6 @@ def tcp_flag():
         tcp_dump = False
         return jsonify({"tcp_flag": tcp_dump})
 
-                    #Functions
 
 @app.route("/", methods=['GET', 'POST'])
 def start_dumping():
