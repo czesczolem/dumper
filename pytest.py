@@ -16,17 +16,23 @@ def get_state(delay):
 		print "[Server Error] Can't connect with server"
 
 
+
+
 if __name__ == '__main__':
 
 	while True:
-
 		tcp_flag = get_state(5)
 		if tcp_flag == True:
-			filename = "test.txt"
+			filename = "test"
 			dump_time = "5"
-			command = "timeout {} tcpdump > {}".format(dump_time, filename)
-			subprocess.call(command, shell=True)
-			requests.post('http://0.0.0.0:5050/tcp_flag')
+			command = "timeout {} echo test > {}.txt".format(dump_time, filename)
+			p = subprocess.Popen(command, shell=True)
+			while True:
+				tcp_flag = get_state(5)
+				if tcp_flag == False:
+					p.kill()
+
+			# requests.post('http://0.0.0.0:5050/tcp_flag')
 
 
 
