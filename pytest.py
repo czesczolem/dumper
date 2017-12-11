@@ -15,9 +15,6 @@ def get_state(delay):
 	except Exception, e:
 		print "[Server Error] Can't connect with server"
 
-
-
-
 if __name__ == '__main__':
 
 	while True:

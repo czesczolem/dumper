@@ -6,18 +6,14 @@ tcp_dump = False
 
                 #Main part
 
-@app.route("/", methods=['GET'])
-def index():
-    return  render_template('index.html')
-
-@app.route("/redirect", methods=['GET'])
-def redirect_delay():
-    global tcp_dump
-    if tcp_dump:
-        return "tcp dump in use, please try again in few minutes"
-    else:
-        tcp_dump = True
-        return render_template('redirect.html')
+# @app.route("/redirect", methods=['GET'])
+# def redirect_delay():
+#     global tcp_dump
+#     if tcp_dump:
+#         return "tcp dump in use, please try again in few minutes"
+#     else:
+#         tcp_dump = True
+#         return render_template('redirect.html')
 
 @app.route('/tcp_flag', methods=['GET', 'POST'])
 def tcp_flag():
@@ -28,9 +24,9 @@ def tcp_flag():
         tcp_dump = False
         return jsonify({"tcp_flag": tcp_dump})
 
-                    #Functionss
+                    #Functions
 
-@app.route("/start_dumping", methods=['GET', 'POST'])
+@app.route("/", methods=['GET', 'POST'])
 def start_dumping():
     global tcp_dump
     if request.method == 'GET':
@@ -38,7 +34,7 @@ def start_dumping():
     else:
         # ans = request.form.keys()
         # if ans[0] == 'start':
-        #     tcp_dump = True
+        tcp_dump = True
         return redirect(url_for('stop_dumping'))
 
 @app.route("/stop_dumping", methods=['GET', 'POST'])
@@ -47,6 +43,7 @@ def stop_dumping():
     if request.method == 'GET':
         return render_template('stop_dumping.html')
     else:
+        tcp_dump = False
         return redirect(url_for('download'))
 
 @app.route("/download", methods=['GET', 'POST'])
