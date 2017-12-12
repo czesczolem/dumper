@@ -14,15 +14,13 @@ def tcp_flag():
         tcp_dump = False
         return jsonify({"tcp_flag": tcp_dump})
 
-
 @app.route("/", methods=['GET', 'POST'])
 def start_dumping():
     global tcp_dump, filename
     if request.method == 'GET':
         return render_template('start_dumping.html')
     else:
-        # ans = request.form.keys()
-        # if ans[0] == 'start':
+
         tcp_dump = True
         filename = str(int(time.time()))
         return redirect(url_for('stop_dumping'))
@@ -36,9 +34,20 @@ def stop_dumping():
         tcp_dump = False
         return redirect(url_for('download', file_id=filename))
 
-@app.route("/download/<file_id>", methods=['GET'])
+@app.route("/download/<file_id>", methods=['GET', 'POST'])
 def download(file_id):
-    return render_template('download.html')
+    if request.method == 'GET':
+        return render_template('download.html')
+    else:
+        return redirect(url_for('get_file', file_id=file_id))
+
+@app.route("/get_file/<file_id>", methods=['GET'])
+def get_file(file_id):
+    filename = file_id + '.txt'
+    return send_file(filename,
+                     mimetype='text/csv',
+                     attachment_filename=filename,
+                     as_attachment=True)
 
 @app.route("/filename", methods=['GET'])
 def get_filename():
