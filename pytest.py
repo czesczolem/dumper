@@ -2,9 +2,6 @@ import subprocess
 import requests
 import json
 import time
-import os
-import signal
-from threading import Thread
 
 def get_state(delay):
 	try:
