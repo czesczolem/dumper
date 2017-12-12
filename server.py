@@ -22,10 +22,12 @@ def start_dumping():
     if request.method == 'GET':
         return render_template('start_dumping.html')
     else:
-
-        tcp_dump = True
-        filename = str(int(time.time()))
-        return redirect(url_for('stop_dumping'))
+        if tcp_dump:
+            return render_template('error.html')
+        else:
+            tcp_dump = True
+            filename = str(int(time.time()))
+            return redirect(url_for('stop_dumping'))
 
 @app.route("/stop_dumping", methods=['GET', 'POST'])
 def stop_dumping():
