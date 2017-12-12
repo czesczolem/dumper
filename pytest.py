@@ -12,17 +12,30 @@ def get_state(delay):
 		r = requests.get('http://0.0.0.0:5050/tcp_flag')
 		json_data = json.loads(r.text)
 		tcp_flag = json_data["tcp_flag"]
-		print "[Client] Flag Check!"
+		print "[Client] Flag Check: ", tcp_flag
 		return tcp_flag
-	except Exception, e:
+
+	except Exception:
 		print "[Server Error] Can't connect with server"
+		return None
+
+def get_filename():
+	try:
+		r = requests.get('http://0.0.0.0:5050/filename')
+		json_data = json.loads(r.text)
+		filename = json_data["filename"]
+		print "set filename: ", filename
+		return filename
+
+	except Exception:
+		print "[Server Error] Can't find file"
 
 if __name__ == '__main__':
 
 	while True:
 		tcp_flag = get_state(5)
 		if tcp_flag == True:
-			filename = time.time()
+			filename = get_filename()
 			dump_time_limit = "5000"
 			command = "timeout {} tcpdump > {}.txt".format(dump_time_limit, filename)
 			p = subprocess.Popen(command, shell=True)
