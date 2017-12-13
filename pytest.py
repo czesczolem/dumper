@@ -34,7 +34,8 @@ if __name__ == '__main__':
 		if tcp_flag == True:
 			filename = get_filename()
 			dump_time_limit = "5000"
-			command = "timeout {} tcpdump > {}.txt".format(dump_time_limit, filename)
+			tcp_dump_command = "tcpdump -i any -s 0 -tttt -XX -w"
+			command = "timeout {} {} {}.pcap".format(dump_time_limit, tcp_dump_command, filename)
 			p = subprocess.Popen(command, shell=True)
 			while True:
 				tcp_flag = get_state(1)

@@ -48,7 +48,7 @@ def download(file_id):
 @app.route("/get_file/<file_id>", methods=['GET'])
 def get_file(file_id):
     try:
-        filename = file_id + '.txt'
+        filename = file_id + '.pcap'
         return send_file(filename,
                          mimetype='text/csv',
                          attachment_filename=filename,
