@@ -33,18 +33,21 @@ if __name__ == '__main__':
 		tcp_flag = get_state(5)
 		if tcp_flag == True:
 			filename = get_filename()
-			dump_time_limit = "5000"
+			dump_time_limit = "5"
 			tcp_dump_command = "tcpdump -i any -s 0 -tttt -XX -w"
 			command = "timeout {} {} {}.pcap".format(dump_time_limit, tcp_dump_command, filename)
 			p = subprocess.Popen(command, shell=True)
 			while True:
 				tcp_flag = get_state(1)
 				print "[Client] Dumping!"
+
 				if tcp_flag == False:
 					#TODO:
-					#tcp kill by filename
-					#change flag after 5 mins
-					kill_tcpdump_command = "kill $(ps aux | grep tcpdump | awk '{print $2}')"
+					#change flag after 5 mins?
+					#parallel,  max workers
+					#site with link list
+					#tcp dump rebuild nie sluchac z jakiegos tam plus arpy wyjebac
+					kill_tcpdump_command = "kill $(ps aux | grep " + filename + " | awk '{print $2}')"
 					subprocess.call(kill_tcpdump_command, shell=True)
 					print "[Client] Dumping is over"
 					break
