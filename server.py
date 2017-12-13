@@ -47,11 +47,14 @@ def download(file_id):
 
 @app.route("/get_file/<file_id>", methods=['GET'])
 def get_file(file_id):
-    filename = file_id + '.txt'
-    return send_file(filename,
-                     mimetype='text/csv',
-                     attachment_filename=filename,
-                     as_attachment=True)
+    try:
+        filename = file_id + '.txt'
+        return send_file(filename,
+                         mimetype='text/csv',
+                         attachment_filename=filename,
+                         as_attachment=True)
+    except Exception:
+        return render_template('no_file.html')
 
 @app.route("/filename", methods=['GET'])
 def get_filename():
