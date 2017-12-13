@@ -41,6 +41,9 @@ if __name__ == '__main__':
 				tcp_flag = get_state(1)
 				print "[Client] Dumping!"
 				if tcp_flag == False:
+					#TODO:
+					#tcp kill by filename
+					#change flag after 5 mins
 					kill_tcpdump_command = "kill $(ps aux | grep tcpdump | awk '{print $2}')"
 					subprocess.call(kill_tcpdump_command, shell=True)
 					print "[Client] Dumping is over"

@@ -20,15 +20,18 @@ def tcp_flag():
 def start_dumping():
     global tcp_dump, filename
     if request.method == 'GET':
-        return render_template('start_dumping.html')
+        return render_template('start_dumping.html', message='')
     else:
         if tcp_dump:
-            return render_template('error.html')
+            return render_template('start_dumping.html', message='Server is busy now. Please try again in few minutes')
         else:
-            timestamp = str(int(time.time()))
-            filename = request.form['filename'] + "_" + timestamp
-            tcp_dump = True
-            return redirect(url_for('stop_dumping'))
+            if request.form['filename']:
+                timestamp = str(int(time.time()))
+                filename = request.form['filename'] + "_" + timestamp
+                tcp_dump = True
+                return redirect(url_for('stop_dumping'))
+            else:
+                return render_template('start_dumping.html', message='Filename is empty!')
 
 @app.route("/stop_dumping", methods=['GET', 'POST'])
 def stop_dumping():
