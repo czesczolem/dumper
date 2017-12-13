@@ -25,8 +25,9 @@ def start_dumping():
         if tcp_dump:
             return render_template('error.html')
         else:
+            timestamp = str(int(time.time()))
+            filename = request.form['filename'] + "_" + timestamp
             tcp_dump = True
-            filename = str(int(time.time()))
             return redirect(url_for('stop_dumping'))
 
 @app.route("/stop_dumping", methods=['GET', 'POST'])
@@ -36,22 +37,22 @@ def stop_dumping():
         return render_template('stop_dumping.html')
     else:
         tcp_dump = False
-        return redirect(url_for('download', file_id=filename))
+        return redirect(url_for('download', filename=filename))
 
-@app.route("/download/<file_id>", methods=['GET', 'POST'])
-def download(file_id):
+@app.route("/download/<filename>", methods=['GET', 'POST'])
+def download(filename):
     if request.method == 'GET':
         return render_template('download.html')
     else:
-        return redirect(url_for('get_file', file_id=file_id))
+        return redirect(url_for('get_file', filename=filename))
 
-@app.route("/get_file/<file_id>", methods=['GET'])
-def get_file(file_id):
+@app.route("/get_file/<filename>", methods=['GET'])
+def get_file(filename):
     try:
-        filename = file_id + '.pcap'
-        return send_file(filename,
+        output = filename + '.pcap'
+        return send_file(output,
                          mimetype='text/csv',
-                         attachment_filename=filename,
+                         attachment_filename=output,
                          as_attachment=True)
     except Exception:
         return render_template('no_file.html')
