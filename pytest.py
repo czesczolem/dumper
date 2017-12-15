@@ -3,6 +3,13 @@ import requests
 import json
 import time
 
+
+# TODO:
+# change flag after 5 mins?
+# parallel,  max workers
+# site with link list
+# tcp dump rebuild nie sluchac z jakiegos tam plus arpy wyjebac
+
 def get_state(delay):
 	try:
 		time.sleep(delay)
@@ -29,27 +36,29 @@ def get_filename():
 
 if __name__ == '__main__':
 
+	session_start_time = 0
+
 	while True:
 		tcp_flag = get_state(5)
 		if tcp_flag == True:
 			filename = get_filename()
-			dump_time_limit = "5"
+			dump_time_limit = 5
+			session_start_time = time.time()
 			tcp_dump_command = "tcpdump -i any -s 0 -tttt -XX -w"
 			command = "timeout {} {} {}.pcap".format(dump_time_limit, tcp_dump_command, filename)
 			p = subprocess.Popen(command, shell=True)
 			while True:
 				tcp_flag = get_state(1)
 				print "[Client] Dumping!"
-
+				session_time = int(time.time() - session_start_time)
 				if tcp_flag == False:
-					#TODO:
-					#change flag after 5 mins?
-					#parallel,  max workers
-					#site with link list
-					#tcp dump rebuild nie sluchac z jakiegos tam plus arpy wyjebac
 					kill_tcpdump_command = "kill $(ps aux | grep " + filename + " | awk '{print $2}')"
 					subprocess.call(kill_tcpdump_command, shell=True)
 					print "[Client] Dumping is over"
+					break
+				elif session_time > dump_time_limit:
+					requests.post('http://0.0.0.0:5050/tcp_flag')
+					print "session_time > dump_time_limit ", session_time
 					break
 
 
