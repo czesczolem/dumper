@@ -2,10 +2,10 @@ import subprocess
 import requests
 import json
 import time
+import os
 
 
 # TODO:
-# change flag after 5 mins?
 # parallel,  max workers
 # site with link list
 # tcp dump rebuild nie sluchac z jakiegos tam plus arpy wyjebac
@@ -42,10 +42,11 @@ if __name__ == '__main__':
 		tcp_flag = get_state(5)
 		if tcp_flag == True:
 			filename = get_filename()
+			file_path = 'dumps/' + filename
 			dump_time_limit = 5
 			session_start_time = time.time()
 			tcp_dump_command = "tcpdump -i any -s 0 -tttt -XX -w"
-			command = "timeout {} {} {}.pcap".format(dump_time_limit, tcp_dump_command, filename)
+			command = "timeout {} {} {}.pcap".format(dump_time_limit, tcp_dump_command, file_path)
 			p = subprocess.Popen(command, shell=True)
 			while True:
 				tcp_flag = get_state(1)

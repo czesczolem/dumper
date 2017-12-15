@@ -53,7 +53,8 @@ def download(filename):
 def get_file(filename):
     try:
         output = filename + '.pcap'
-        return send_file(output,
+        output_path = 'dumps/' + output
+        return send_file(output_path,
                          mimetype='text/csv',
                          attachment_filename=output,
                          as_attachment=True)
