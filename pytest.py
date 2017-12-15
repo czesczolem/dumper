@@ -2,7 +2,6 @@ import subprocess
 import requests
 import json
 import time
-import os
 
 
 # TODO:

@@ -1,6 +1,8 @@
 from flask import Flask, render_template, url_for, redirect
 from flask import request, jsonify, send_file
 import time
+from db_conn import connection
+from MySQLdb import escape_string
 
 app = Flask(__name__)
 
@@ -29,6 +31,10 @@ def start_dumping():
                 timestamp = str(int(time.time()))
                 filename = request.form['filename'] + "_" + timestamp
                 tcp_dump = True
+                c, conn = connection()
+                c.execute("INSERT INTO dumps (filename, CREATION_DATE) VALUES (%s, %s)", (escape_string(filename),
+                                                                                          int(time.time())))
+
                 return redirect(url_for('stop_dumping'))
             else:
                 return render_template('start_dumping.html', message='Filename is empty!')
