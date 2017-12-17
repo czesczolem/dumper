@@ -1,7 +1,7 @@
 from flask import Flask, render_template, url_for, redirect
 from flask import request, jsonify, send_file
 import time
-from db_conn import connection
+from db_conn import dump_in, get_dumps, dumps_links
 from MySQLdb import escape_string
 
 app = Flask(__name__)
@@ -31,10 +31,7 @@ def start_dumping():
                 timestamp = str(int(time.time()))
                 filename = request.form['filename'] + "_" + timestamp
                 tcp_dump = True
-                c, conn = connection()
-                c.execute("INSERT INTO dumps (filename, CREATION_DATE) VALUES (%s, %s)", (escape_string(filename),
-                                                                                          int(time.time())))
-
+                dump_in(filename)
                 return redirect(url_for('stop_dumping'))
             else:
                 return render_template('start_dumping.html', message='Filename is empty!')
@@ -65,12 +62,18 @@ def get_file(filename):
                          attachment_filename=output,
                          as_attachment=True)
     except Exception:
-        return render_template('no_file.html')
+        return "error"
 
 @app.route("/filename", methods=['GET'])
 def get_filename():
     global filename
     return jsonify({"filename": filename})
+
+@app.route("/dumps_db", methods=['GET'])
+def get_db_state():
+    results = get_dumps()
+    links = dumps_links(results)
+    return render_template('table.html', db_state=links)
 
 if __name__ == '__main__':
     app.run(host='0.0.0.0', port=5050, debug=True)
